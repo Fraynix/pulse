@@ -1,21 +1,17 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/stores/auth';
-import { getSupabaseBrowserClient } from '@/lib/supabase/client';
 import { RoleSwitch } from './role-switch';
 import { Button } from '../ui/button';
 
 export function Header() {
-  const router = useRouter();
   const { userId, clear } = useAuthStore();
 
-  const handleLogout = async () => {
-    const supabase = getSupabaseBrowserClient();
-    await supabase.auth.signOut();
+  // Shared Fraynix ID session: sign out at the portal, which sends us back here.
+  const handleLogout = () => {
     clear();
-    router.push('/login');
+    window.location.href = '/api/logout';
   };
 
   return (
@@ -31,13 +27,7 @@ export function Header() {
             <Button variant="ghost" size="sm" onClick={handleLogout}>
               Déconnexion
             </Button>
-          ) : (
-            <Link href="/login">
-              <Button variant="secondary" size="sm">
-                Connexion
-              </Button>
-            </Link>
-          )}
+          ) : null}
         </div>
       </div>
     </header>

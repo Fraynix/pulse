@@ -19,8 +19,6 @@ async function snap(page: any, path: string, name: string) {
 test('Tour complet — pages publiques & auth', async ({ page }) => {
   // Public pages
   await snap(page, '/', '01-home');
-  await snap(page, '/login', '02-login');
-  await snap(page, '/signup', '03-signup');
   await snap(page, '/onboarding', '04-onboarding');
   await snap(page, '/explore', '05-explore-coachs');
 
@@ -52,8 +50,6 @@ test('Tour mobile — pages clés', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
 
   await snap(page, '/', '30-mobile-home');
-  await snap(page, '/login', '31-mobile-login');
-  await snap(page, '/signup', '32-mobile-signup');
   await snap(page, '/onboarding', '33-mobile-onboarding');
   await snap(page, '/explore', '34-mobile-explore');
   await snap(page, '/dashboard', '35-mobile-dashboard');

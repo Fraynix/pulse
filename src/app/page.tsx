@@ -16,16 +16,10 @@ export default function Home() {
           </span>
           <div className="flex items-center gap-6">
             <Link
-              href="/signup"
-              className="hidden text-sm font-medium text-slate-400 transition-colors hover:text-white sm:inline-block"
-            >
-              Devenir coach
-            </Link>
-            <Link
-              href="/login"
+              href="/dashboard"
               className="inline-flex min-h-[44px] items-center rounded-xl border border-slate-600 px-5 py-2.5 text-base font-semibold text-white transition-all hover:border-white hover:bg-white/10"
             >
-              Connexion
+              Ouvrir l'app
             </Link>
           </div>
         </nav>
@@ -47,10 +41,10 @@ export default function Home() {
             </p>
             <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row">
               <Link
-                href="/signup"
+                href="/dashboard"
                 className="inline-flex items-center rounded-xl bg-gradient-to-r from-brand-500 to-brand-600 px-8 py-3.5 text-base font-semibold text-white shadow-glow-green transition-all hover:from-brand-600 hover:to-brand-700"
               >
-                Commencer gratuitement
+                Ouvrir mon espace
               </Link>
               <a
                 href="#features"
@@ -197,7 +191,7 @@ export default function Home() {
         </p>
         <div className="mt-8">
           <Link
-            href="/signup"
+            href="/profile"
             className="inline-flex items-center rounded-xl bg-slate-900 px-8 py-3.5 text-base font-semibold text-white shadow-sm transition-colors hover:bg-slate-800"
           >
             Devenir coach

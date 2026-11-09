@@ -7,7 +7,6 @@ import { Button } from '@/components/pulse/button';
 import { Badge } from '@/components/pulse/badge';
 import { AddressAutocomplete } from '@/components/pulse/address-autocomplete';
 import { useAuthStore } from '@/stores/auth';
-import { getSupabaseBrowserClient } from '@/lib/supabase/client';
 import Link from 'next/link';
 
 export default function ProfilePage() {
@@ -15,15 +14,10 @@ export default function ProfilePage() {
   const { userRole, userId, setUser, clear } = useAuthStore();
   const [becomingCoach, setBecomingCoach] = useState(false);
 
-  const handleLogout = async () => {
-    try {
-      const supabase = getSupabaseBrowserClient();
-      await supabase.auth.signOut();
-    } catch {
-      // signOut can fail if session is already expired — continue anyway
-    }
+  // Shared Fraynix ID session: sign out at the portal, which sends us back here.
+  const handleLogout = () => {
     clear();
-    window.location.href = '/login';
+    window.location.href = '/api/logout';
   };
 
   const isCoach = userRole === 'coach' || userRole === 'both';

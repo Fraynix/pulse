@@ -7,8 +7,8 @@
 import postgres from 'postgres';
 import crypto from 'crypto';
 
-const DB_URL =
-  'postgresql://postgres.pvaqmwgmxsyddzvnbnjr:Di96de13%26*0000@aws-1-eu-west-2.pooler.supabase.com:6543/postgres';
+const DB_URL = process.env.DATABASE_URL;
+if (!DB_URL) throw new Error('Set DATABASE_URL');
 
 const sql = postgres(DB_URL, { ssl: 'require' });
 

@@ -1,24 +1,26 @@
 import { createClient } from '@supabase/supabase-js';
 
-const c = createClient(
-  'https://pvaqmwgmxsyddzvnbnjr.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2YXFtd2dteHN5ZGR6dm5ibmpyIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NTY1MDgwNSwiZXhwIjoyMDkxMjI2ODA1fQ.TZ4dGhWjtFf-VcoHXG-wKIqXtIzq5l_-a2kqFwmZHE8'
-);
+if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY || !process.env.DEMO_PASSWORD) {
+  console.error('Set SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY and DEMO_PASSWORD before running this script.');
+  process.exit(1);
+}
+const DEMO_PASSWORD = process.env.DEMO_PASSWORD;
+const c = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
 const userIds = {};
 const coachMap = {};
 
 // --- Users ---
 const users = [
-  { email: 'marie.martin@demo.coach', password: 'Demo1234!', name: 'Marie Martin', role: 'coach' },
-  { email: 'julien.dupont@demo.coach', password: 'Demo1234!', name: 'Julien Dupont', role: 'coach' },
-  { email: 'sarah.benali@demo.coach', password: 'Demo1234!', name: 'Sarah Benali', role: 'coach' },
-  { email: 'thomas.roux@demo.coach', password: 'Demo1234!', name: 'Thomas Roux', role: 'coach' },
-  { email: 'amelie.garcia@demo.coach', password: 'Demo1234!', name: 'Amelie Garcia', role: 'coach' },
-  { email: 'lucas.petit@demo.athlete', password: 'Demo1234!', name: 'Lucas Petit', role: 'athlete' },
-  { email: 'emma.blanc@demo.athlete', password: 'Demo1234!', name: 'Emma Blanc', role: 'athlete' },
-  { email: 'adam.morel@demo.athlete', password: 'Demo1234!', name: 'Adam Morel', role: 'athlete' },
-  { email: 'admin@oikos.one', password: 'Admin1234!', name: 'Admin OIKOS', role: 'athlete' },
+  { email: 'marie.martin@demo.coach', password: DEMO_PASSWORD, name: 'Marie Martin', role: 'coach' },
+  { email: 'julien.dupont@demo.coach', password: DEMO_PASSWORD, name: 'Julien Dupont', role: 'coach' },
+  { email: 'sarah.benali@demo.coach', password: DEMO_PASSWORD, name: 'Sarah Benali', role: 'coach' },
+  { email: 'thomas.roux@demo.coach', password: DEMO_PASSWORD, name: 'Thomas Roux', role: 'coach' },
+  { email: 'amelie.garcia@demo.coach', password: DEMO_PASSWORD, name: 'Amelie Garcia', role: 'coach' },
+  { email: 'lucas.petit@demo.athlete', password: DEMO_PASSWORD, name: 'Lucas Petit', role: 'athlete' },
+  { email: 'emma.blanc@demo.athlete', password: DEMO_PASSWORD, name: 'Emma Blanc', role: 'athlete' },
+  { email: 'adam.morel@demo.athlete', password: DEMO_PASSWORD, name: 'Adam Morel', role: 'athlete' },
+  { email: 'admin@oikos.one', password: DEMO_PASSWORD, name: 'Admin OIKOS', role: 'athlete' },
 ];
 
 for (const u of users) {
@@ -167,7 +169,7 @@ for (const email of coaches.map(c => c.email)) {
 }
 
 console.log('\n=== SEED COMPLETE ===');
-console.log('Admin: admin@oikos.one / Admin1234!');
-console.log('Coaches: 5 (verified, Paris) / Demo1234!');
-console.log('Athletes: 3 / Demo1234!');
+console.log('Admin: admin@oikos.one (password: DEMO_PASSWORD)');
+console.log('Coaches: 5 (verified, Paris)');
+console.log('Athletes: 3');
 console.log('Templates: 11 | Events: 4 | Bookings: 8 | Ratings: 8');

@@ -1,7 +1,7 @@
 import postgres from 'postgres';
 
 const sql = postgres(
-  'postgresql://postgres.pvaqmwgmxsyddzvnbnjr:Di96de13%26*0000@aws-1-eu-west-2.pooler.supabase.com:6543/postgres',
+  process.env.DATABASE_URL ?? (() => { throw new Error('Set DATABASE_URL'); })(),
   { ssl: 'require' }
 );
 

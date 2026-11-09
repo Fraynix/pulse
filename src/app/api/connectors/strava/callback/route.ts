@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdminClient } from '@/lib/supabase/admin';
+import { verifyConnectorState } from '@/lib/connectors/state';
 import { exchangeStravaCode, fetchStravaActivities } from '@/lib/connectors/strava';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -12,7 +13,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(new URL('/profile?error=strava_denied', req.url));
   }
 
-  const userId = state.split(':')[0];
+  const userId = verifyConnectorState(state);
   if (!userId) return NextResponse.redirect(new URL('/profile?error=invalid_state', req.url));
 
   try {

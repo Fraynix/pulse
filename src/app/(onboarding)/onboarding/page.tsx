@@ -7,7 +7,6 @@ import { SportSelector } from '@/components/pulse/sport-selector';
 import { Confetti } from '@/components/pulse/confetti';
 import { Button } from '@/components/pulse/button';
 import { useAuthStore } from '@/stores/auth';
-import { getSupabaseBrowserClient } from '@/lib/supabase/client';
 
 const TOTAL_STEPS = 5;
 

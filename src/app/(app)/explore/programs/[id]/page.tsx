@@ -145,7 +145,7 @@ export default function ProgramDetailAthleteView() {
 
   const handleEnroll = async () => {
     if (!userId) {
-      router.push('/login');
+      window.location.reload();
       return;
     }
     setEnrolling(true);

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSupabaseServerClient } from '@/lib/supabase/server';
 import { getSupabaseAdminClient } from '@/lib/supabase/admin';
+import { signConnectorState, verifyConnectorState } from './state';
 import type { FitnessProvider, SyncedActivity } from './types';
 
 /**
@@ -11,7 +12,7 @@ export async function handleOAuthConnect(getAuthUrl: (state: string) => string) 
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: 'Non connecté' }, { status: 401 });
 
-  const state = user.id;
+  const state = signConnectorState(user.id);
   const url = getAuthUrl(state);
   return NextResponse.redirect(url);
 }
@@ -27,8 +28,11 @@ export async function handleOAuthCallback(
   fetchActivities: (token: string) => Promise<SyncedActivity[]>,
 ) {
   const admin = getSupabaseAdminClient();
-  const userId = state;
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3100';
+
+  // The state is signed at /connect: a forged or replayed one must not bind a tracker to another user.
+  const userId = verifyConnectorState(state);
+  if (!userId) return NextResponse.redirect(`${appUrl}/profile?error=invalid_state`);
 
   try {
     const tokens = await exchangeCode(code);
