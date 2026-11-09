@@ -134,7 +134,7 @@ export default function ExplorePage() {
               title="Les coachs arrivent bientôt"
               description="Nous construisons un réseau de coachs certifiés près de chez vous. Revenez vite ou devenez le premier !"
               actionLabel="Devenir coach"
-              onAction={() => window.location.href = '/signup'}
+              onAction={() => window.location.href = '/profile'}
             />
           )
         ) : tab === 'events' ? (

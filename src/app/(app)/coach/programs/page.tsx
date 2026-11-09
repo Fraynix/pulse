@@ -145,22 +145,22 @@ export default function CoachProgramsPage() {
             icon={error === 'auth' ? '🔒' : error === 'not-coach' ? '🚫' : '⚠️'}
             title={
               error === 'auth'
-                ? 'Connectez-vous pour accéder à vos programmes'
+                ? 'Session expirée, rechargez la page'
                 : error === 'not-coach'
                   ? 'Cette page est réservée aux coachs'
                   : 'Impossible de charger les programmes. Réessayez.'
             }
             description={
               error === 'auth'
-                ? 'Vous devez être connecté pour gérer vos programmes.'
+                ? 'Votre session a expiré.'
                 : error === 'not-coach'
                   ? 'Seuls les comptes coach peuvent accéder à cette page.'
                   : 'Vérifiez votre connexion et réessayez.'
             }
-            actionLabel={error === 'auth' ? 'Se connecter' : error === 'not-coach' ? undefined : 'Réessayer'}
+            actionLabel={error === 'auth' ? 'Recharger' : error === 'not-coach' ? undefined : 'Réessayer'}
             onAction={
               error === 'auth'
-                ? () => (window.location.href = '/login')
+                ? () => (window.location.reload())
                 : error === 'not-coach'
                   ? undefined
                   : () => { setError(null); setLoading(true); fetchPrograms(); }

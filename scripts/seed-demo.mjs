@@ -1,7 +1,13 @@
 import { createClient } from '@supabase/supabase-js';
 
-const SUPABASE_URL = 'https://pvaqmwgmxsyddzvnbnjr.supabase.co';
-const SERVICE_ROLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2YXFtd2dteHN5ZGR6dm5ibmpyIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NTY1MDgwNSwiZXhwIjoyMDkxMjI2ODA1fQ.TZ4dGhWjtFf-VcoHXG-wKIqXtIzq5l_-a2kqFwmZHE8';
+// Credentials come from the environment — never commit them.
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const DEMO_PASSWORD = process.env.DEMO_PASSWORD;
+if (!SUPABASE_URL || !SERVICE_ROLE_KEY || !DEMO_PASSWORD) {
+  console.error('Set SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY and DEMO_PASSWORD before running this script.');
+  process.exit(1);
+}
 
 const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 
@@ -63,21 +69,21 @@ console.log('\n=== 1. USERS ===');
 
 const allUsers = [
   // Coaches
-  { email: 'marie.martin@demo.coach', password: 'Demo1234!', first_name: 'Marie', last_name: 'Martin', role: 'coach' },
-  { email: 'julien.dupont@demo.coach', password: 'Demo1234!', first_name: 'Julien', last_name: 'Dupont', role: 'coach' },
-  { email: 'sarah.benali@demo.coach', password: 'Demo1234!', first_name: 'Sarah', last_name: 'Benali', role: 'coach' },
-  { email: 'thomas.roux@demo.coach', password: 'Demo1234!', first_name: 'Thomas', last_name: 'Roux', role: 'coach' },
-  { email: 'amelie.garcia@demo.coach', password: 'Demo1234!', first_name: 'Amélie', last_name: 'Garcia', role: 'coach' },
+  { email: 'marie.martin@demo.coach', password: DEMO_PASSWORD, first_name: 'Marie', last_name: 'Martin', role: 'coach' },
+  { email: 'julien.dupont@demo.coach', password: DEMO_PASSWORD, first_name: 'Julien', last_name: 'Dupont', role: 'coach' },
+  { email: 'sarah.benali@demo.coach', password: DEMO_PASSWORD, first_name: 'Sarah', last_name: 'Benali', role: 'coach' },
+  { email: 'thomas.roux@demo.coach', password: DEMO_PASSWORD, first_name: 'Thomas', last_name: 'Roux', role: 'coach' },
+  { email: 'amelie.garcia@demo.coach', password: DEMO_PASSWORD, first_name: 'Amélie', last_name: 'Garcia', role: 'coach' },
   // Athletes
-  { email: 'lucas.petit@demo.athlete', password: 'Demo1234!', first_name: 'Lucas', last_name: 'Petit', role: 'athlete' },
-  { email: 'emma.blanc@demo.athlete', password: 'Demo1234!', first_name: 'Emma', last_name: 'Blanc', role: 'athlete' },
-  { email: 'adam.morel@demo.athlete', password: 'Demo1234!', first_name: 'Adam', last_name: 'Morel', role: 'athlete' },
-  { email: 'chloe.duval@demo.athlete', password: 'Demo1234!', first_name: 'Chloé', last_name: 'Duval', role: 'athlete' },
-  { email: 'hugo.leroy@demo.athlete', password: 'Demo1234!', first_name: 'Hugo', last_name: 'Leroy', role: 'athlete' },
+  { email: 'lucas.petit@demo.athlete', password: DEMO_PASSWORD, first_name: 'Lucas', last_name: 'Petit', role: 'athlete' },
+  { email: 'emma.blanc@demo.athlete', password: DEMO_PASSWORD, first_name: 'Emma', last_name: 'Blanc', role: 'athlete' },
+  { email: 'adam.morel@demo.athlete', password: DEMO_PASSWORD, first_name: 'Adam', last_name: 'Morel', role: 'athlete' },
+  { email: 'chloe.duval@demo.athlete', password: DEMO_PASSWORD, first_name: 'Chloé', last_name: 'Duval', role: 'athlete' },
+  { email: 'hugo.leroy@demo.athlete', password: DEMO_PASSWORD, first_name: 'Hugo', last_name: 'Leroy', role: 'athlete' },
   // Admin
-  { email: 'admin@oikos.one', password: 'Admin1234!', first_name: 'Admin', last_name: 'OIKOS', role: 'admin' },
+  { email: 'admin@oikos.one', password: DEMO_PASSWORD, first_name: 'Admin', last_name: 'OIKOS', role: 'admin' },
   // Dimitri — the demo user (coach + athlete)
-  { email: 'dimitri@coaching-app.fr', password: 'Oikos2026!', first_name: 'Dimitri', last_name: 'K.', role: 'both' },
+  { email: 'dimitri@coaching-app.fr', password: DEMO_PASSWORD, first_name: 'Dimitri', last_name: 'K.', role: 'both' },
 ];
 
 const userIds = {};
@@ -828,7 +834,7 @@ console.log('║        SEED COMPLETE — PULSE         ║');
 console.log('╠══════════════════════════════════════╣');
 console.log('║ Demo user:                           ║');
 console.log('║   dimitri@coaching-app.fr            ║');
-console.log('║   Oikos2026!                         ║');
+console.log('║   (password: DEMO_PASSWORD)          ║');
 console.log('╠══════════════════════════════════════╣');
 
 for (const [table, count] of Object.entries(stats.created).sort()) {

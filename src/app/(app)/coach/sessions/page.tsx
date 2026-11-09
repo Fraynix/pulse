@@ -46,22 +46,22 @@ export default function CoachSessionsPage() {
           icon={isAuth ? '🔒' : isNotCoach ? '🚫' : '⚠️'}
           title={
             isAuth
-              ? 'Connectez-vous pour accéder à vos séances'
+              ? 'Session expirée, rechargez la page'
               : isNotCoach
                 ? 'Cette page est réservée aux coachs'
                 : 'Impossible de charger les séances. Réessayez.'
           }
           description={
             isAuth
-              ? 'Vous devez être connecté pour gérer vos séances.'
+              ? 'Votre session a expiré.'
               : isNotCoach
                 ? 'Seuls les comptes coach peuvent accéder à cette page.'
                 : 'Vérifiez votre connexion et réessayez.'
           }
-          actionLabel={isAuth ? 'Se connecter' : isNotCoach ? undefined : 'Réessayer'}
+          actionLabel={isAuth ? 'Recharger' : isNotCoach ? undefined : 'Réessayer'}
           onAction={
             isAuth
-              ? () => (window.location.href = '/login')
+              ? () => (window.location.reload())
               : isNotCoach
                 ? undefined
                 : () => window.location.reload()

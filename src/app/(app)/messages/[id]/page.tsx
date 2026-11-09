@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/stores/auth';
-import { getSupabaseBrowserClient } from '@/lib/supabase/client';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -68,41 +67,31 @@ export default function ChatPage() {
 
   useEffect(() => { fetchMessages(); }, [fetchMessages]);
 
-  // Supabase Realtime subscription
+  // Polling (replaces the old Realtime subscription): the data lives on a database the browser
+  // no longer talks to directly. Paused while the tab is hidden. GET also marks messages as read.
   useEffect(() => {
-    if (!conversationId) return;
-
-    const supabase = getSupabaseBrowserClient();
-    const channel = supabase
-      .channel(`messages:${conversationId}`)
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'messages',
-          filter: `conversation_id=eq.${conversationId}`,
-        },
-        (payload: any) => {
-          const newMsg = payload.new as Message;
-          setMessages(prev => {
-            // Avoid duplicates
-            if (prev.some(m => m.id === newMsg.id)) return prev;
-            return [...prev, newMsg];
-          });
+    if (!conversationId || !userId) return;
+    const timer = setInterval(async () => {
+      if (document.hidden) return;
+      try {
+        const res = await fetch(`/api/messages/${conversationId}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        const fresh: Message[] = data.messages || [];
+        setMessages(prev => {
+          const known = new Set(prev.map(m => m.id));
+          const added = fresh.filter(m => !known.has(m.id));
+          if (added.length === 0) return prev;
+          // Keep optimistic temp messages; swap in server order for everything else.
+          const temps = prev.filter(m => m.id.startsWith('temp-'));
           setTimeout(scrollToBottom, 50);
-
-          // Mark as read if not sent by me
-          if (newMsg.sender_id !== userId) {
-            fetch(`/api/messages/${conversationId}?limit=1`).catch(() => {});
-          }
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
+          return [...fresh, ...temps];
+        });
+      } catch {
+        // transient network error — next tick retries
+      }
+    }, 5000);
+    return () => clearInterval(timer);
   }, [conversationId, userId, scrollToBottom]);
 
   // Send message
